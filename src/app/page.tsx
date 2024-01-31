@@ -12,6 +12,7 @@ import {
 import { getPals } from '~/lib/get-pals'
 
 import { PalCard } from '../components/pal-card'
+import GridCardsSkeleton from './grid-cards-skeleton'
 
 export default async function Home({
   searchParams,
@@ -34,7 +35,7 @@ export default async function Home({
   return (
     <>
       <SearchBar search={search} />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<GridCardsSkeleton />}>
         <section className="mt-10 flex flex-wrap justify-center gap-4">
           {data.content.map((item) => (
             <PalCard
