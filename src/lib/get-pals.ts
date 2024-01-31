@@ -1,3 +1,5 @@
+import { cache } from 'react'
+
 import { env } from '~/env'
 
 import type { IPal } from './interfaces'
@@ -21,14 +23,16 @@ export interface DataSchema {
   total: number
 }
 
-export async function getPals(
-  params: ParamsSchema = {
-    limit: 24,
+export const getPals = cache(
+  (
+    params: ParamsSchema = {
+      limit: 24,
+    },
+  ): Promise<DataSchema> => {
+    const apiUrl =
+      env.API_URL +
+      '?' +
+      new URLSearchParams(params as Record<string, string>).toString()
+    return fetch(apiUrl).then((res) => res.json() as Promise<DataSchema>)
   },
-): Promise<DataSchema> {
-  const apiUrl =
-    env.API_URL +
-    '?' +
-    new URLSearchParams(params as Record<string, string>).toString()
-  return fetch(apiUrl).then((res) => res.json() as Promise<DataSchema>)
-}
+)
